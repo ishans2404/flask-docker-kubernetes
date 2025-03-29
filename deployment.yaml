@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-flask
+  labels:
+    app: hello-world-flask
+spec:
+  replicas: 3  
+  selector:
+    matchLabels:
+      app: hello-world-flask
+  template:
+    metadata:
+      labels:
+        app: hello-world-flask
+    spec:
+      containers:
+        - name: hello-world-flask
+          image: ishans24/flask-app  
+          ports:
+            - containerPort: 8080
+          env:
+            - name: FLASK_ENV
+              value: "production"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world-flask-service
+  labels:
+    app: hello-world-flask
+spec:
+  selector:
+    app: hello-world-flask
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
