@@ -60,90 +60,7 @@ docker push <your-dockerhub-username>/flask-app
 
 ## Step 3: Kubernetes Resources
 
-### 3.1 Configuration Files
-
-1. **configmap.yaml**
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: flask-config
-data:
-  FLASK_ENV: "production"
-```
-
-2. **secret.yaml** (Base64 encoded values)
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: flask-secret
-type: Opaque
-data:
-  SECRET_KEY: "base64_encoded_value"
-```
-
-3. **deployment.yaml**
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: hello-world-flask
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: hello-world-flask
-  template:
-    metadata:
-      labels:
-        app: hello-world-flask
-    spec:
-      containers:
-      - name: hello-world-flask
-        image: ishans24/flask-app
-        ports:
-        - containerPort: 8080
-        envFrom:
-        - configMapRef:
-            name: flask-config
-        - secretRef:
-            name: flask-secret
-```
-
-4. **service.yaml**
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: hello-world-flask-service
-spec:
-  type: LoadBalancer
-  selector:
-    app: hello-world-flask
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8080
-```
-
-5. **hpa.yaml**
-```yaml
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: hello-world-flask-hpa
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: hello-world-flask
-  minReplicas: 2
-  maxReplicas: 5
-  targetCPUUtilizationPercentage: 50
-```
-
-### 3.2 Apply Configurations
+### 3.1 Apply Configurations
 ```powershell
 kubectl apply -f configmap.yaml
 kubectl apply -f secret.yaml
@@ -154,7 +71,7 @@ kubectl apply -f hpa.yaml
 
 Verify deployment:
 ```powershell
-kubectl get pods,svc,hpa
+kubectl get pods, svc, hpa
 ```
 
 ---
