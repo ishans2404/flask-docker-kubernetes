@@ -222,7 +222,7 @@ Find the complete configuration files in the repository:
 - Secret
 - HPA
 
-[GitHub Repository](https://github.com/ishans2404/flask-kubernetes-deployment)
+[GitHub Repository](https://github.com/ishans2404/flask-docker-kubernetes)
 
 ---
 
